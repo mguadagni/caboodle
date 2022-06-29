@@ -1,9 +1,9 @@
 package com.capstone.caboodle.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Profile {
@@ -14,6 +14,10 @@ public class Profile {
     private String name;
     private Integer age;
 
+    @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Listing> listings;
+
     public Profile() {
     }
 
@@ -21,6 +25,14 @@ public class Profile {
         this.id = id;
         this.name = name;
         this.age = age;
+    }
+
+    public Set<Listing> getListings() {
+        return listings;
+    }
+
+    public void setListings(Set<Listing> listings) {
+        this.listings = listings;
     }
 
     public Long getId() {
