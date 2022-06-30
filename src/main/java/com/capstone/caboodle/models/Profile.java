@@ -3,6 +3,8 @@ package com.capstone.caboodle.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,23 +20,16 @@ public class Profile {
     @JsonIgnore
     private Set<Listing> listings;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(
-            name = "users_categories",
-            joinColumns = @JoinColumn(name = "profile_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
+            name = "profiles_categories",
+            joinColumns = {@JoinColumn(name = "profile_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "category_id", referencedColumnName = "id")}
     )
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();
 
     public Profile() {
     }
-
-//    public Profile(Long id, String name, Integer age) {
-//        this.id = id;
-//        this.name = name;
-//        this.age = age;
-//    }
-
 
     public Profile(Long id, String name, Integer age, Set<Listing> listings, Set<Category> categories) {
         this.id = id;
@@ -42,14 +37,6 @@ public class Profile {
         this.age = age;
         this.listings = listings;
         this.categories = categories;
-    }
-
-    public Set<Listing> getListings() {
-        return listings;
-    }
-
-    public void setListings(Set<Listing> listings) {
-        this.listings = listings;
     }
 
     public Long getId() {
@@ -74,6 +61,14 @@ public class Profile {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public Set<Listing> getListings() {
+        return listings;
+    }
+
+    public void setListings(Set<Listing> listings) {
+        this.listings = listings;
     }
 
     public Set<Category> getCategories() {

@@ -9,10 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @CrossOrigin
 @RestController
@@ -30,17 +30,17 @@ public class CategoryController {
         return new ResponseEntity<>("TEST", HttpStatus.OK);
     }
 
-    @PostMapping("/{profileId")
-    public ResponseEntity<?> createCategory(@PathVariable Long profileId, @RequestBody Category newCategory) {
-        Profile profile = profileRepository.findById(profileId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
-        );
-
-        newCategory.setProfiles();
-
-        Category category = categoryRepository.save(newCategory);
-        return new ResponseEntity<>(category, HttpStatus.CREATED);
-    }
+//    @PostMapping("/{profileId}")
+//    public ResponseEntity<?> createCategory(@PathVariable Long profileId, @RequestBody Category newCategory) {
+//        Set<Profile> profile = profileRepository.findById(profileId).orElseThrow(
+//                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+//        );
+//
+//        newCategory.setProfiles(profile);
+//
+//        Category category = categoryRepository.save(newCategory);
+//        return new ResponseEntity<>(category, HttpStatus.CREATED);
+//    }
 
     @GetMapping("/")
     public ResponseEntity<List<Category>> getAllCategories() {

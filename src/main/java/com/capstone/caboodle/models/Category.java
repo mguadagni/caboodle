@@ -1,6 +1,8 @@
 package com.capstone.caboodle.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,9 +13,8 @@ public class Category {
     private Long id;
     private String category;
 
-    @ManyToMany(mappedBy = "categories")
-    private Set<Profile> profiles;
-
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    private Set<Profile> profiles = new HashSet<>();
 
     public Category() {
     }
