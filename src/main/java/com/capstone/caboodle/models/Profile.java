@@ -18,13 +18,30 @@ public class Profile {
     @JsonIgnore
     private Set<Listing> listings;
 
+    @ManyToMany
+    @JoinTable(
+            name = "users_categories",
+            joinColumns = @JoinColumn(name = "profile_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categories;
+
     public Profile() {
     }
 
-    public Profile(Long id, String name, Integer age) {
+//    public Profile(Long id, String name, Integer age) {
+//        this.id = id;
+//        this.name = name;
+//        this.age = age;
+//    }
+
+
+    public Profile(Long id, String name, Integer age, Set<Listing> listings, Set<Category> categories) {
         this.id = id;
         this.name = name;
         this.age = age;
+        this.listings = listings;
+        this.categories = categories;
     }
 
     public Set<Listing> getListings() {
@@ -59,4 +76,11 @@ public class Profile {
         this.age = age;
     }
 
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
 }
