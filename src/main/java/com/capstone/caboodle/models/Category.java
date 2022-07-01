@@ -1,5 +1,7 @@
 package com.capstone.caboodle.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -14,6 +16,7 @@ public class Category {
     private String category;
 
     @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Profile> profiles = new HashSet<>();
 
     public Category() {

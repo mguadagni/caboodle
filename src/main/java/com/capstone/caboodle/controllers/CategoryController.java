@@ -30,13 +30,20 @@ public class CategoryController {
         return new ResponseEntity<>("TEST", HttpStatus.OK);
     }
 
+    @PostMapping("/")
+    public ResponseEntity<?> createCategory(@RequestBody Category newCategory) {
+        Category category = categoryRepository.save(newCategory);
+
+        return new ResponseEntity<>(category, HttpStatus.CREATED);
+    }
+
 //    @PostMapping("/{profileId}")
-//    public ResponseEntity<?> createCategory(@PathVariable Long profileId, @RequestBody Category newCategory) {
-//        Set<Profile> profile = profileRepository.findById(profileId).orElseThrow(
+//    public ResponseEntity<?> addCategoryToProfile(@PathVariable Long profileId, @RequestBody Category newCategory) {
+//        Profile profile = profileRepository.findById(profileId).orElseThrow(
 //                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
 //        );
 //
-//        newCategory.setProfiles(profile);
+//        newCategory.getProfiles().add(profile);
 //
 //        Category category = categoryRepository.save(newCategory);
 //        return new ResponseEntity<>(category, HttpStatus.CREATED);

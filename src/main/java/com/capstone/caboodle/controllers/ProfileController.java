@@ -1,6 +1,8 @@
 package com.capstone.caboodle.controllers;
 
+import com.capstone.caboodle.models.Category;
 import com.capstone.caboodle.models.Profile;
+import com.capstone.caboodle.repositories.CategoryRepository;
 import com.capstone.caboodle.repositories.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,9 @@ public class ProfileController {
 
     @Autowired
     private ProfileRepository profileRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @GetMapping("/test")
     public ResponseEntity<?> testRoute() {
@@ -41,6 +46,23 @@ public class ProfileController {
         Profile profile = profileRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
+
+        return new ResponseEntity<>(profile, HttpStatus.OK);
+    }
+
+    @PutMapping("/{userId}/addCategory/{categoryId}")
+    public ResponseEntity<Profile> addCategoryToUser(@PathVariable Long userId, @PathVariable Long categoryId) {
+        Profile profile = profileRepository.findById(userId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+
+        Category category = categoryRepository.findById(categoryId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+
+        profile.getCategories().add(category);
+
+        profileRepository.save(profile);
 
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
