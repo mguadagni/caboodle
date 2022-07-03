@@ -3,6 +3,7 @@ package com.capstone.caboodle.controllers;
 import com.capstone.caboodle.models.Category;
 import com.capstone.caboodle.models.Profile;
 import com.capstone.caboodle.repositories.CategoryRepository;
+import com.capstone.caboodle.repositories.ListingRepository;
 import com.capstone.caboodle.repositories.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,9 @@ public class ProfileController {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ListingRepository listingRepository;
 
     @GetMapping("/test")
     public ResponseEntity<?> testRoute() {

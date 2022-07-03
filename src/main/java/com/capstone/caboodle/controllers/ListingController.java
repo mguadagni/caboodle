@@ -1,5 +1,6 @@
 package com.capstone.caboodle.controllers;
 
+import com.capstone.caboodle.models.Category;
 import com.capstone.caboodle.models.Listing;
 import com.capstone.caboodle.models.Profile;
 import com.capstone.caboodle.repositories.ListingRepository;
@@ -27,6 +28,13 @@ public class ListingController {
     @GetMapping("/test")
     public ResponseEntity<?> testRoute() {
         return new ResponseEntity<>("Test Route", HttpStatus.OK);
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<?> createListing(@RequestBody Listing newListing) {
+        Listing listing = listingRepository.save(newListing);
+
+        return new ResponseEntity<>(listing, HttpStatus.CREATED);
     }
 
     @PostMapping("/{profileId}")
