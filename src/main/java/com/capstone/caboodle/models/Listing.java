@@ -18,14 +18,20 @@ public class Listing {
     @JsonIgnoreProperties("age")
     private Profile profile;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    //@JsonIgnoreProperties("age")
+    private Category category;
+
     public Listing() {
     }
 
-    public Listing(Long id, String item, int price, Profile profile) {
+    public Listing(Long id, String item, int price, Profile profile, Category category) {
         this.id = id;
         this.item = item;
         this.price = price;
         this.profile = profile;
+        this.category = category;
     }
 
     public Long getId() {
@@ -58,5 +64,13 @@ public class Listing {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

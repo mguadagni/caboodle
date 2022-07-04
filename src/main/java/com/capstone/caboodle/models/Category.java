@@ -19,6 +19,10 @@ public class Category {
     @JsonIgnore
     private Set<Profile> profiles = new HashSet<>();
 
+//    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+//    @JsonIgnore
+//    private Set<Category> categories;
+
     public Category() {
     }
 

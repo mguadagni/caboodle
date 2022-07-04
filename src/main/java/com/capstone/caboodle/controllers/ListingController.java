@@ -3,6 +3,7 @@ package com.capstone.caboodle.controllers;
 import com.capstone.caboodle.models.Category;
 import com.capstone.caboodle.models.Listing;
 import com.capstone.caboodle.models.Profile;
+import com.capstone.caboodle.repositories.CategoryRepository;
 import com.capstone.caboodle.repositories.ListingRepository;
 import com.capstone.caboodle.repositories.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class ListingController {
 
     @Autowired
     private ProfileRepository profileRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @GetMapping("/test")
     public ResponseEntity<?> testRoute() {
@@ -69,5 +73,39 @@ public class ListingController {
         List<Listing> listings = listingRepository.findAllByProfile_id(profileId);
 
         return new ResponseEntity<>(listings, HttpStatus.OK);
+    }
+
+    @PutMapping("/{listingId}/addCategoryToListing/{categoryId}")
+    public ResponseEntity<Listing> addCategoryToListing(@PathVariable Long listingId, @PathVariable Long categoryId) {
+        Listing listing = listingRepository.findById(listingId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+
+        Category category = categoryRepository.findById(categoryId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+
+        listing.setCategory(category);
+
+        listingRepository.save(listing);
+
+        return new ResponseEntity<>(listing, HttpStatus.OK);
+    }
+
+    @PutMapping("/{listingId}/addProfileToListing/{profileId}")
+    public ResponseEntity<Listing> addProfileToListing(@PathVariable Long listingId, @PathVariable Long profileId) {
+        Listing listing = listingRepository.findById(listingId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+
+        Profile profile = profileRepository.findById(profileId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+
+        listing.setProfile(profile);
+
+        listingRepository.save(listing);
+
+        return new ResponseEntity<>(listing, HttpStatus.OK);
     }
 }

@@ -54,7 +54,7 @@ public class ProfileController {
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
 
-    @PutMapping("/{userId}/addCategory/{categoryId}")
+    @PutMapping("/{userId}/addCategoryToUser/{categoryId}")
     public ResponseEntity<Profile> addCategoryToUser(@PathVariable Long userId, @PathVariable Long categoryId) {
         Profile profile = profileRepository.findById(userId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
