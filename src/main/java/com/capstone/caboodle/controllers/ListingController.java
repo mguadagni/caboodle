@@ -92,6 +92,8 @@ public class ListingController {
         return new ResponseEntity<>(listing, HttpStatus.OK);
     }
 
+    //Not sure if I want users to be able to add a profile to the listing
+    //A profile should be required to upload listing
     @PutMapping("/{listingId}/addProfileToListing/{profileId}")
     public ResponseEntity<Listing> addProfileToListing(@PathVariable Long listingId, @PathVariable Long profileId) {
         Listing listing = listingRepository.findById(listingId).orElseThrow(

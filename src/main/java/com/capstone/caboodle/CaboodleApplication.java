@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CaboodleApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CaboodleApplication.class, args);
-	}
 
+		SpringApplication.run(CaboodleApplication.class, args);
+
+	}
 }

@@ -1,5 +1,6 @@
 package com.capstone.caboodle.controllers;
 
+import CSVreader.CSVReader;
 import com.capstone.caboodle.models.Category;
 import com.capstone.caboodle.models.Profile;
 import com.capstone.caboodle.repositories.CategoryRepository;
@@ -66,6 +67,34 @@ public class ProfileController {
 
         profile.getCategories().add(category);
 
+        profileRepository.save(profile);
+
+        return new ResponseEntity<>(profile, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{userId}/deleteCategoryFromUser/{categoryId}")
+    public ResponseEntity<Profile> deleteCategoryFromUser(@PathVariable Long userId, @PathVariable Long categoryId) {
+        Profile profile = profileRepository.findById(userId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+
+        Category category = categoryRepository.findById(categoryId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+
+        profile.getCategories().remove(category);
+
+        profileRepository.delete(profile);
+
+        return new ResponseEntity<>(profile, HttpStatus.OK);
+    }
+
+    @PutMapping("/updateAge/{userId}/{userAge}")
+    public ResponseEntity<Profile> updateUserAge(@PathVariable Long userId, @PathVariable Integer userAge) {
+        Profile profile = profileRepository.findById(userId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        profile.setAge(userAge);
         profileRepository.save(profile);
 
         return new ResponseEntity<>(profile, HttpStatus.OK);
