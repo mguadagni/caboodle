@@ -3,7 +3,6 @@ package com.capstone.caboodle.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,9 +18,9 @@ public class Category {
     @JsonIgnore
     private Set<Profile> profiles = new HashSet<>();
 
-//    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-//    @JsonIgnore
-//    private Set<Category> categories;
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Listing> listings;
 
     public Category() {
     }

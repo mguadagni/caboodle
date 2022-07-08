@@ -42,17 +42,17 @@ public class CategoryController {
         return new ResponseEntity<>(category, HttpStatus.CREATED);
     }
 
-//    @PostMapping("/{profileId}")
-//    public ResponseEntity<?> addCategoryToProfile(@PathVariable Long profileId, @RequestBody Category newCategory) {
-//        Profile profile = profileRepository.findById(profileId).orElseThrow(
-//                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
-//        );
-//
-//        newCategory.getProfiles().add(profile);
-//
-//        Category category = categoryRepository.save(newCategory);
-//        return new ResponseEntity<>(category, HttpStatus.CREATED);
-//    }
+    @PostMapping("/{profileId}")
+    public ResponseEntity<?> addCategoryToProfile(@PathVariable Long profileId, @RequestBody Category newCategory) {
+        Profile profile = profileRepository.findById(profileId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+
+        newCategory.getProfiles().add(profile);
+
+        Category category = categoryRepository.save(newCategory);
+        return new ResponseEntity<>(category, HttpStatus.CREATED);
+    }
 
     @GetMapping("/")
     public ResponseEntity<List<Category>> getAllCategories() {
@@ -75,5 +75,14 @@ public class CategoryController {
         );
         categoryRepository.deleteById(id);
         return new ResponseEntity<>(category, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{categoryId}")
+    public ResponseEntity<?> deleteCategory(@PathVariable Long categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        categoryRepository.deleteById(categoryId);
+        return new ResponseEntity<>(category.getCategory() + " Category has been deleted", HttpStatus.OK);
     }
 }

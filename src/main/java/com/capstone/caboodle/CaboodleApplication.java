@@ -1,5 +1,6 @@
 package com.capstone.caboodle;
 
+import CSVreader.CSVReader;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,5 +11,10 @@ public class CaboodleApplication {
 
 		SpringApplication.run(CaboodleApplication.class, args);
 
+		try {
+			CSVReader.dataReader();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 }

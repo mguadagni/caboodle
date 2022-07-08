@@ -15,12 +15,11 @@ public class Listing {
 
     @ManyToOne
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
-    @JsonIgnoreProperties("age")
+    @JsonIgnoreProperties({"age", "categories"})
     private Profile profile;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
-    //@JsonIgnoreProperties("age")
     private Category category;
 
     public Listing() {

@@ -84,7 +84,7 @@ public class ProfileController {
 
         profile.getCategories().remove(category);
 
-        profileRepository.delete(profile);
+        profileRepository.save(profile);
 
         return new ResponseEntity<>(profile, HttpStatus.OK);
     }
@@ -98,6 +98,15 @@ public class ProfileController {
         profileRepository.save(profile);
 
         return new ResponseEntity<>(profile, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{profileId}")
+    public ResponseEntity<?> deleteProfile(@PathVariable Long profileId) {
+        Profile profile = profileRepository.findById(profileId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        profileRepository.deleteById(profileId);
+        return new ResponseEntity<>(profile.getName() + " has been deleted", HttpStatus.OK);
     }
 
 }

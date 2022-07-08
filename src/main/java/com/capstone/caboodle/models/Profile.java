@@ -20,7 +20,6 @@ public class Profile {
     private Set<Listing> listings;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    //@JsonIgnore
     @JoinTable(
             name = "profiles_categories",
             joinColumns = {@JoinColumn(name = "profile_id", referencedColumnName = "id")},

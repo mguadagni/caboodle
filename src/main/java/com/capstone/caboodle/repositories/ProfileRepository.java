@@ -7,5 +7,4 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
-    List<Profile> findAllByAge(Integer age);
 }

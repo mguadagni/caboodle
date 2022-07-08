@@ -69,8 +69,36 @@ public class ListingController {
     }
 
     @GetMapping("/profile/{profileId}")
-    public ResponseEntity<List<Listing>> getNotesByProfile(@PathVariable Long profileId) {
+    public ResponseEntity<List<Listing>> getListingsByProfile(@PathVariable Long profileId) {
         List<Listing> listings = listingRepository.findAllByProfile_id(profileId);
+
+        return new ResponseEntity<>(listings, HttpStatus.OK);
+    }
+
+    @GetMapping("/categoryId/{categoryId}")
+    public ResponseEntity<List<Listing>> getListingsByCategoryId(@PathVariable Long categoryId) {
+        List<Listing> listings = listingRepository.findAllByCategory_id(categoryId);
+
+        return new ResponseEntity<>(listings, HttpStatus.OK);
+    }
+
+    @GetMapping("/categoryName/{category}")
+    public ResponseEntity<List<Listing>> getListingsByCategoryName(@PathVariable String category) {
+        List<Listing> listings = listingRepository.findAllByCategory_category(category);
+
+        return new ResponseEntity<>(listings, HttpStatus.OK);
+    }
+
+    @GetMapping("/getListingGTE/{price}")
+    public ResponseEntity<List<Listing>> getListingsGTE(@PathVariable int price) {
+        List<Listing> listings = listingRepository.findByPriceGreaterThanEqual(price);
+
+        return new ResponseEntity<>(listings, HttpStatus.OK);
+    }
+
+    @GetMapping("/getListingLTE/{price}")
+    public ResponseEntity<List<Listing>> getListingsLTE(@PathVariable int price) {
+        List<Listing> listings = listingRepository.findByPriceLessThanEqual(price);
 
         return new ResponseEntity<>(listings, HttpStatus.OK);
     }
@@ -109,5 +137,25 @@ public class ListingController {
         listingRepository.save(listing);
 
         return new ResponseEntity<>(listing, HttpStatus.OK);
+    }
+
+    @PutMapping("/updatePrice/{listingId}/{listingPrice}")
+    public ResponseEntity<Listing> updateListingPricePath(@PathVariable Long listingId, @PathVariable int listingPrice) {
+        Listing listing = listingRepository.findById(listingId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        listing.setPrice(listingPrice);
+        listingRepository.save(listing);
+
+        return new ResponseEntity<>(listing, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{listingId}")
+    public ResponseEntity<?> deleteListing(@PathVariable Long listingId) {
+        Listing listing = listingRepository.findById(listingId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        listingRepository.deleteById(listingId);
+        return new ResponseEntity<>(listing.getItem() + " Listing has been deleted", HttpStatus.OK);
     }
 }
