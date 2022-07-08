@@ -1,6 +1,7 @@
 package com.capstone.caboodle;
 
-import CSVreader.CSVReader;
+import CSVreader.CSVReader1;
+import CSVreader.CSVReader2;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -11,8 +12,11 @@ public class CaboodleApplication {
 
 		SpringApplication.run(CaboodleApplication.class, args);
 
+		System.out.println("  ");
+
 		try {
-			CSVReader.dataReader();
+//			CSVReader1.dataReader();
+			CSVReader2.CSVToJson();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

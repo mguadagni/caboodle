@@ -3,7 +3,7 @@ package CSVreader;
 import java.io.*;
 import java.util.Scanner;
 
-public class CSVReader {
+public class CSVReader1 {
 
     public static void dataReader() throws Exception {
 
