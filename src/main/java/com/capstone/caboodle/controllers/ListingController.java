@@ -7,6 +7,7 @@ import com.capstone.caboodle.models.Profile;
 import com.capstone.caboodle.repositories.CategoryRepository;
 import com.capstone.caboodle.repositories.ListingRepository;
 import com.capstone.caboodle.repositories.ProfileRepository;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -160,5 +161,15 @@ public class ListingController {
         listingRepository.deleteById(listingId);
         return new ResponseEntity<>(listing.getItem() + " Listing has been deleted", HttpStatus.OK);
     }
+
+//    @PostMapping("/uploadDataSet")
+//    public ResponseEntity<?> getDataSet() {
+//        try {
+//            Listing listing = listingRepository.save(CSVReader2.CSVToJson());
+//        } catch (Exception e) {
+//            return new ResponseEntity<>("Error", HttpStatus.NOT_FOUND);
+//        }
+//
+//    }
 
 }
