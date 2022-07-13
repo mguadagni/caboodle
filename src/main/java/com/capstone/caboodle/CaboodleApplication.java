@@ -14,11 +14,11 @@ public class CaboodleApplication {
 
 		System.out.println("  ");
 
-		try {
+//		try {
 //			CSVReader1.dataReader();
-			CSVReader2.CSVToJson();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+//			CSVReader2.CSVToJson();
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//		}
 	}
 }
