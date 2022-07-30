@@ -1,6 +1,7 @@
 package com.capstone.caboodle.controllers;
 
 import com.capstone.caboodle.models.ERole;
+import com.capstone.caboodle.models.Profile;
 import com.capstone.caboodle.models.Role;
 import com.capstone.caboodle.models.User;
 import com.capstone.caboodle.payloads.request.LoginRequest;
@@ -12,6 +13,7 @@ import com.capstone.caboodle.repositories.UserRepository;
 import com.capstone.caboodle.security.jwt.JwtUtils;
 import com.capstone.caboodle.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.HashSet;
@@ -113,4 +116,20 @@ public class AuthContoller {
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> getOneUser(@PathVariable Long id){
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
 }
