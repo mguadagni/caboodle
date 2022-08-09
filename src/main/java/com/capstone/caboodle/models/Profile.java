@@ -15,6 +15,11 @@ public class Profile {
     private String name;
     private Integer age;
 
+    @OneToOne
+    @JoinColumn(name = "users_id", referencedColumnName = "id")
+    @JsonIgnore
+    private User user;
+
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Listing> listings;
@@ -30,12 +35,21 @@ public class Profile {
     public Profile() {
     }
 
-    public Profile(Long id, String name, Integer age, Set<Listing> listings, Set<Category> categories) {
+    public Profile(Long id, String name, Integer age, User user, Set<Listing> listings, Set<Category> categories) {
         this.id = id;
         this.name = name;
         this.age = age;
+        this.user = user;
         this.listings = listings;
         this.categories = categories;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Long getId() {

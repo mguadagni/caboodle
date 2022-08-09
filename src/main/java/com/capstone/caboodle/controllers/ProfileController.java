@@ -2,9 +2,11 @@ package com.capstone.caboodle.controllers;
 
 import com.capstone.caboodle.models.Category;
 import com.capstone.caboodle.models.Profile;
+import com.capstone.caboodle.models.User;
 import com.capstone.caboodle.repositories.CategoryRepository;
 import com.capstone.caboodle.repositories.ListingRepository;
 import com.capstone.caboodle.repositories.ProfileRepository;
+import com.capstone.caboodle.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,9 @@ public class ProfileController {
     private ProfileRepository profileRepository;
 
     @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
     private CategoryRepository categoryRepository;
 
     @Autowired
@@ -35,6 +40,15 @@ public class ProfileController {
 
     @PostMapping("/")
     public ResponseEntity<?> createProfile(@RequestBody Profile newProfile){
+
+        User currentUser = userDetailsService.getCurrentUser();
+
+        if (currentUser == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+
+        newProfile.setUser(currentUser);
+
         Profile profile = profileRepository.save(newProfile);
 
         return new ResponseEntity<>(profile, HttpStatus.CREATED);

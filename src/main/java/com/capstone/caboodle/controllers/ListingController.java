@@ -4,9 +4,11 @@ import CSVreader.CSVReader2;
 import com.capstone.caboodle.models.Category;
 import com.capstone.caboodle.models.Listing;
 import com.capstone.caboodle.models.Profile;
+import com.capstone.caboodle.models.User;
 import com.capstone.caboodle.repositories.CategoryRepository;
 import com.capstone.caboodle.repositories.ListingRepository;
 import com.capstone.caboodle.repositories.ProfileRepository;
+import com.capstone.caboodle.security.services.UserDetailsServiceImpl;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +34,9 @@ public class ListingController {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+
     @GetMapping("/test")
     public ResponseEntity<?> testRoute() {
         return new ResponseEntity<>("Test Route", HttpStatus.OK);
@@ -39,14 +44,14 @@ public class ListingController {
 
     @PostMapping("/")
     public ResponseEntity<?> createListing(@RequestBody Listing newListing) {
-        Listing listing = listingRepository.save(newListing);
 
-        return new ResponseEntity<>(listing, HttpStatus.CREATED);
-    }
+        User currentUser = userDetailsService.getCurrentUser();
 
-    @PostMapping("/{profileId}")
-    public ResponseEntity<?> createListing(@PathVariable Long profileId, @RequestBody Listing newListing) {
-        Profile profile = profileRepository.findById(profileId).orElseThrow(
+        if (currentUser == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+
+        Profile profile = profileRepository.findByUser_Id(currentUser.getId()).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
 
@@ -55,6 +60,18 @@ public class ListingController {
         Listing listing = listingRepository.save(newListing);
         return new ResponseEntity<>(listing, HttpStatus.CREATED);
     }
+
+//    @PostMapping("/{profileId}")
+//    public ResponseEntity<?> createListing(@PathVariable Long profileId, @RequestBody Listing newListing) {
+//        Profile profile = profileRepository.findById(profileId).orElseThrow(
+//                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+//        );
+//
+//        newListing.setProfile(profile);
+//
+//        Listing listing = listingRepository.save(newListing);
+//        return new ResponseEntity<>(listing, HttpStatus.CREATED);
+//    }
 
     @GetMapping("/")
     public ResponseEntity<List<Listing>> getAllListings() {
