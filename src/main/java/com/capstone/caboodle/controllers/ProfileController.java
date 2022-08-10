@@ -6,6 +6,7 @@ import com.capstone.caboodle.models.User;
 import com.capstone.caboodle.repositories.CategoryRepository;
 import com.capstone.caboodle.repositories.ListingRepository;
 import com.capstone.caboodle.repositories.ProfileRepository;
+import com.capstone.caboodle.security.services.UserDetailsImpl;
 import com.capstone.caboodle.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,6 +53,19 @@ public class ProfileController {
         Profile profile = profileRepository.save(newProfile);
 
         return new ResponseEntity<>(profile, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/self")
+    public @ResponseBody Profile getSelf() {
+        User currentUser = userDetailsService.getCurrentUser();
+
+        if (currentUser == null) {
+            return null;
+        }
+
+        return profileRepository.findByUser_Id(currentUser.getId()).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
     }
 
     @GetMapping("/")

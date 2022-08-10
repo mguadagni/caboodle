@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
-    Profile findByUsername (String username);
+//    Profile findByUsername (String username);
     Optional<Profile> findByUser_Id(Long id);
 }
