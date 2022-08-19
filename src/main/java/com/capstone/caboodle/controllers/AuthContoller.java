@@ -132,4 +132,10 @@ public class AuthContoller {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @DeleteMapping("/")
+    public ResponseEntity<?> deleteAllUsers() {
+        userRepository.deleteAll();
+        return ResponseEntity.ok("Deleted all Users");
+    }
+
 }

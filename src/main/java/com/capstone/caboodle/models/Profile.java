@@ -1,6 +1,7 @@
 package com.capstone.caboodle.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -14,10 +15,11 @@ public class Profile {
     private Long id;
     private String name;
     private Integer age;
+    private Integer balance;
 
     @OneToOne
     @JoinColumn(name = "users_id", referencedColumnName = "id")
-    @JsonIgnore
+    @JsonIgnoreProperties({"profile","password"})
     private User user;
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
@@ -35,13 +37,14 @@ public class Profile {
     public Profile() {
     }
 
-    public Profile(Long id, String name, Integer age, User user, Set<Listing> listings, Set<Category> categories) {
+    public Profile(Long id, String name, Integer age, User user, Set<Listing> listings, Set<Category> categories,Integer balance) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.user = user;
         this.listings = listings;
         this.categories = categories;
+        this.balance = balance;
     }
 
     public User getUser() {
@@ -90,5 +93,13 @@ public class Profile {
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
+    }
+
+    public Integer getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Integer balance) {
+        this.balance = balance;
     }
 }

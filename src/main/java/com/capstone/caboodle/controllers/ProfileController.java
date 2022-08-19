@@ -137,4 +137,21 @@ public class ProfileController {
         return new ResponseEntity<>(profile.getName() + " has been deleted", HttpStatus.OK);
     }
 
+    @DeleteMapping("/")
+    public ResponseEntity<?> deleteAllProfiles() {
+        profileRepository.deleteAll();
+        return ResponseEntity.ok("Deleted all Profiles");
+    }
+
+    @PutMapping("/balance/{userId}/{balance}")
+    public ResponseEntity<Profile> updateBalance(@PathVariable Long userId, @PathVariable Integer balance) {
+        Profile profile = profileRepository.findById(userId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        profile.setBalance(balance);
+        profileRepository.save(profile);
+
+        return new ResponseEntity<>(profile, HttpStatus.OK);
+    }
+
 }

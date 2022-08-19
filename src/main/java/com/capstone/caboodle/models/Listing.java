@@ -12,6 +12,7 @@ public class Listing {
     private Long id;
     private String item;
     private int price;
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
@@ -25,12 +26,13 @@ public class Listing {
     public Listing() {
     }
 
-    public Listing(Long id, String item, int price, Profile profile, Category category) {
+    public Listing(Long id, String item, int price, Profile profile, Category category, String description) {
         this.id = id;
         this.item = item;
         this.price = price;
         this.profile = profile;
         this.category = category;
+        this.description = description;
     }
 
     public Long getId() {
@@ -71,5 +73,13 @@ public class Listing {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
