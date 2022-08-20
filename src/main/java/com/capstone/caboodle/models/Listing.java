@@ -3,6 +3,7 @@ package com.capstone.caboodle.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.io.File;
 
 @Entity
 public class Listing {
@@ -13,6 +14,8 @@ public class Listing {
     private String item;
     private int price;
     private String description;
+    private File picture;
+
 
     @ManyToOne
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
@@ -26,13 +29,14 @@ public class Listing {
     public Listing() {
     }
 
-    public Listing(Long id, String item, int price, Profile profile, Category category, String description) {
+    public Listing(Long id, String item, int price, Profile profile, Category category, String description, File picture) {
         this.id = id;
         this.item = item;
         this.price = price;
         this.profile = profile;
         this.category = category;
         this.description = description;
+        this.picture = picture;
     }
 
     public Long getId() {
@@ -81,5 +85,13 @@ public class Listing {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public File getPicture() {
+        return picture;
+    }
+
+    public void setPicture(File picture) {
+        this.picture = picture;
     }
 }

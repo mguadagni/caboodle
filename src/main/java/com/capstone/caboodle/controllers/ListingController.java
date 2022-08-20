@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -177,6 +178,28 @@ public class ListingController {
         );
         listingRepository.deleteById(listingId);
         return new ResponseEntity<>(listing.getItem() + " Listing has been deleted", HttpStatus.OK);
+    }
+
+    @PutMapping("updateDescription/{listingId}")
+    public ResponseEntity<Listing> updateListingDescription(@PathVariable Long listingId, @RequestBody String description) {
+        Listing listing = listingRepository.findById(listingId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        listing.setDescription(description);
+        listingRepository.save(listing);
+
+        return new ResponseEntity<>(listing, HttpStatus.OK);
+    }
+
+    @PutMapping("updatePicture/{listingId}")
+    public ResponseEntity<Listing> updateListingPicture(@PathVariable Long listingId, @RequestBody File listingFile) {
+        Listing listing = listingRepository.findById(listingId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        listing.setPicture(listingFile);
+        listingRepository.save(listing);
+
+        return new ResponseEntity<>(listing, HttpStatus.OK);
     }
 
 //    @PostMapping("/uploadDataSet")
