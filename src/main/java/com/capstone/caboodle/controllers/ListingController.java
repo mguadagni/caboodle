@@ -13,11 +13,19 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +52,8 @@ public class ListingController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> createListing(@RequestBody Listing newListing) {
+    public ResponseEntity<?> createListing(/*@RequestBody*/ Listing newListing,
+                                           @RequestParam("picture") MultipartFile multipartFile) throws IOException {
 
         User currentUser = userDetailsService.getCurrentUser();
 
@@ -58,7 +67,26 @@ public class ListingController {
 
         newListing.setProfile(profile);
 
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        newListing.setPicture(fileName);
+
         Listing listing = listingRepository.save(newListing);
+
+        String uploadDir = "/listing-pic/" + newListing.getId();
+
+        Path uploadPath = Paths.get(uploadDir);
+
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            Path filePath = uploadPath.resolve(fileName);
+            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new IOException("Could not save uploaded file: " + fileName);
+        }
+
         return new ResponseEntity<>(listing, HttpStatus.CREATED);
     }
 
