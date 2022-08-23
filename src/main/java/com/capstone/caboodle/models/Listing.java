@@ -14,7 +14,7 @@ public class Listing {
     private String item;
     private int price;
     private String description;
-    private File picture;
+    private String picture;
 
 
     @ManyToOne
@@ -29,7 +29,7 @@ public class Listing {
     public Listing() {
     }
 
-    public Listing(Long id, String item, int price, Profile profile, Category category, String description, File picture) {
+    public Listing(Long id, String item, int price, Profile profile, Category category, String description, String picture) {
         this.id = id;
         this.item = item;
         this.price = price;
@@ -87,11 +87,11 @@ public class Listing {
         this.description = description;
     }
 
-    public File getPicture() {
+    public String getPicture() {
         return picture;
     }
 
-    public void setPicture(File picture) {
+    public void setPicture(String picture) {
         this.picture = picture;
     }
 }

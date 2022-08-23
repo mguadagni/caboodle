@@ -192,7 +192,7 @@ public class ListingController {
     }
 
     @PutMapping("updatePicture/{listingId}")
-    public ResponseEntity<Listing> updateListingPicture(@PathVariable Long listingId, @RequestBody File listingFile) {
+    public ResponseEntity<Listing> updateListingPicture(@PathVariable Long listingId, @RequestBody String listingFile) {
         Listing listing = listingRepository.findById(listingId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
