@@ -52,7 +52,7 @@ public class ListingController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> createListing(/*@RequestBody*/ Listing newListing,
+    public ResponseEntity<?> createListing(@RequestBody Listing newListing,
                                            @RequestParam("picture") MultipartFile multipartFile) throws IOException {
 
         User currentUser = userDetailsService.getCurrentUser();
@@ -88,6 +88,15 @@ public class ListingController {
         }
 
         return new ResponseEntity<>(listing, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{listingId}/picture")
+    public ResponseEntity<?> getListingPicture(@PathVariable Long listingId) {
+        Listing listing = listingRepository.findById(listingId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+
+        return new ResponseEntity<> (listing.getPicture(), HttpStatus.OK);
     }
 
 //    @PostMapping("/{profileId}")
@@ -230,6 +239,22 @@ public class ListingController {
         return new ResponseEntity<>(listing, HttpStatus.OK);
     }
 
+    @PutMapping("/updateListing/{listingId}")
+    Listing updateListing (@PathVariable Long listingId, @RequestBody Listing updatedListing) {
+
+        return listingRepository.findById(listingId)
+                .map(listing -> {
+                    listing.setItem(updatedListing.getItem());
+                    listing.setPrice(updatedListing.getPrice());
+                    listing.setDescription(updatedListing.getDescription());
+                    return listingRepository.save(listing);
+                })
+                .orElseGet(() -> {
+                    updatedListing.setId(listingId);
+                    return listingRepository.save(updatedListing);
+                });
+    }
+
 //    @PostMapping("/uploadDataSet")
 //    public ResponseEntity<?> getDataSet() {
 //        try {
@@ -240,5 +265,18 @@ public class ListingController {
 //        }
 //
 //    }
-
 }
+//    @PutMapping("/employees/{id}")
+//    Employee replaceEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
+//
+//        return repository.findById(id)
+//                .map(employee -> {
+//                    employee.setName(newEmployee.getName());
+//                    employee.setRole(newEmployee.getRole());
+//                    return repository.save(employee);
+//                })
+//                .orElseGet(() -> {
+//                    newEmployee.setId(id);
+//                    return repository.save(newEmployee);
+//                });
+//    }
